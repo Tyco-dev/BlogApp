@@ -1,92 +1,84 @@
 body {
-    margin:0;
-    padding:0;
-    font-family:helvetica, sans-serif;
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
 }
 
-a {
-    color:#00abff;
-    text-decoration:none;
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
 }
 
-h1 {
-    font-weight:normal;
-    border-bottom:1px solid #bbb;
-    padding:0 0 10px 0;
+ul {
+  margin: 0;
 }
 
-h2 {
-    font-weight:normal;
-    margin:30px 0 0;
+.bg-steel {
+  background-color: #5f788a;
 }
 
-#content {
-    float:left;
-    width:60%;
-    padding:0 0 0 30px;
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
 }
 
-#sidebar {
-    float:right;
-    width:30%;
-    padding:10px;
-    background:#efefef;
-    height:100%;
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
 }
 
-p.date {
-    color:#ccc;
-    font-family: georgia, serif;
-    font-size: 12px;
-    font-style: italic;
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
 }
 
-/* pagination */
-.pagination {
-    margin:40px 0;
-    font-weight:bold;
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
-/* forms */
-label {
-    float:left;
-    clear:both;
-    color:#333;
-    margin-bottom:4px;
-}
-input, textarea {
-    clear:both;
-    float:left;
-    margin:0 0 10px;
-    background:#ededed;
-    border:0;
-    padding:6px 10px;
-    font-size:12px;
-}
-input[type=submit] {
-    font-weight:bold;
-    background:#00abff;
-    color:#fff;
-    padding:10px 20px;
-    font-size:14px;
-    text-transform:uppercase;
-}
-.errorlist {
-    color:#cc0033;
-    float:left;
-    clear:both;
-    padding-left:10px;
+.article-title {
+  color: #444444;
 }
 
-/* comments */
-.comment {
-    padding:10px;
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
 }
-.comment:nth-child(even) {
-    background:#efefef;
+
+.article-content {
+  white-space: pre-line;
 }
-.comment .info {
-    font-weight:bold;
-    font-size:12px;
-    color:#666;
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
 }
