@@ -10,6 +10,8 @@ Functionality:
   -Custom template filter to allow markdown syntax in blog posts
   -Site Map
   -RSS Feed
+  -Pagination
+  
  
   
   
