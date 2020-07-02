@@ -39,6 +39,9 @@
           <div class="content-section">
             <h3>Sidebar</h3>
             <p class='text-muted'>Total Posts: {% total_posts %}
+            <p>
+                <a href="{% url "blog:post_feed" %}">Subscribe to my RSS feed</a>
+            </p>
               <ul class="list-group">
                 <li class="list-group-item list-group-item-light">Latest Posts
                 {% show_latest_posts %}</li>
@@ -51,6 +54,7 @@
                         </li>
                     {% endfor %}
                 </ul>
+
                 </li>
               </ul>
             </p>
