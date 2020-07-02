@@ -8,7 +8,7 @@
             <div class="navbar-nav mr-auto">
               <a class="nav-item nav-link" href="{% url 'blog:post_list' %}">Home</a>
               {% if request.user.is_staff %}
-              <a class="nav-item nav-link" href="">Add Post</a>
+              <a class="nav-item nav-link" href="{% url 'blog:add_post' %}">Add Post</a>
               {% endif %}
             </div>
             <!-- Navbar Right Side -->

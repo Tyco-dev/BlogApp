@@ -13,4 +13,5 @@ urlpatterns = [
          name='post_detail'),
     path('<int:post_id>/share/',
          views.post_share, name='post_share'),
+    path('add_post/', views.add_post, name='add_post'),
 ]

@@ -1,4 +1,5 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}My Blog{% endblock %}
 
@@ -15,7 +16,7 @@
               <small class="text-muted">Published {{ post.publish }}</small>
             </div>
             <h2><a class="article-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.body }}</p>
+            <p class="article-content">{{ post.body|markdown|truncatechars_html:30 }}</p>
             <p class="tags">
               Tags:
               {% for tag in post.tags.all %}

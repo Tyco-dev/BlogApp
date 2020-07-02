@@ -1,5 +1,7 @@
 from django import forms
-from .models import Comment
+from django.utils import timezone
+from taggit.managers import TaggableManager
+from .models import Comment, Post
 from django.contrib.auth.models import User
 
 
@@ -15,3 +17,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('body',)
+
+
+class AddPostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'body', 'status', 'tags']

@@ -1,12 +1,16 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils import timezone
+from django.utils.text import slugify
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm
+from .forms import EmailPostForm, CommentForm, AddPostForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -20,7 +24,7 @@ def post_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
 
-    paginator = Paginator(object_list, 3)  # 3 posts in each page
+    paginator = Paginator(object_list, 5)  # 5 posts in each page
     page = request.GET.get('page')  # Indicates the current page number
     try:
         posts = paginator.page(page)
@@ -37,6 +41,7 @@ def post_list(request, tag_slug=None):
                    'tag': tag})
 
 
+@login_required(login_url='users:login')
 def post_detail(request, year, month, day, post, ):
     post = get_object_or_404(Post, slug=post,
                              status='published',
@@ -57,6 +62,7 @@ def post_detail(request, year, month, day, post, ):
             new_comment = comment_form.save(commit=False)
             # Assign the current post to the comment
             new_comment.post = post
+            # Assign the current user to the comment
             new_comment.name = request.user
             # Save the comment to the database
             new_comment.save()
@@ -65,10 +71,10 @@ def post_detail(request, year, month, day, post, ):
 
     # List of similar posts
     post_tags_ids = post.tags.values_list('id', flat=True)
-    similar_posts = Post.published.filter(tags__in=post_tags_ids)\
-                                  .exclude(id=post.id)
-    similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
-                                .order_by('-same_tags','-publish')[:4]
+    similar_posts = Post.published.filter(tags__in=post_tags_ids) \
+        .exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
+                        .order_by('-same_tags', '-publish')[:4]
 
     return render(request,
                   'blog/post/detail.html',
@@ -114,3 +120,20 @@ def post_share(request, post_id):
                   {'post': post,
                    'form': form,
                    'sent': sent})
+
+
+@staff_member_required
+def add_post(request):
+    if request.method == 'POST':
+        form = AddPostForm(request.POST)
+
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.publish = timezone.now()
+            post.slug = slugify(post.title)
+            post.save()
+            return redirect('blog:post_list')
+    else:
+        form = AddPostForm()
+    return render(request, 'blog/post/add_post.html', {'form': form})
