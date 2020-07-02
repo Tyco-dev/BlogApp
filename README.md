@@ -11,6 +11,7 @@ Functionality:
   -Site Map
   -RSS Feed
   -Pagination
+  -Full-text search 
   
  
   
