@@ -2,7 +2,6 @@
  
 Functionality:
   -User authentication (Login/Logout/Registration)
-    -As well as social authentication (Facebook/Google)
   -User permissions
     -Only staff can add/edit/delete posts, or delete other users comments. 
     -Registered users can add comments and share posts
