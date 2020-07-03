@@ -5,7 +5,7 @@ from django.utils.text import slugify
 from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.models import User
 from .models import Post, Comment
-from .forms import EmailPostForm, CommentForm, AddPostForm
+from .forms import EmailPostForm, CommentForm, AddPostForm, SearchForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
@@ -15,6 +15,8 @@ from taggit.managers import TaggableManager
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 
 # Create your views here.
@@ -52,7 +54,6 @@ class DraftListView(ListView):
     context_object_name = 'posts'
     paginate_by = 3
     template_name = 'blog/post/list.html'
-
 
 
 @login_required(login_url='users:login')
@@ -166,3 +167,21 @@ class DeletePostView(SuccessMessageMixin, DeleteView):
     template_name = 'blog/post/delete_post.html'
     success_url = reverse_lazy('blog:post_list')
     success_message = 'Post has been delete!'
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.published.annotate(
+                search=SearchVector('title', 'body'),
+            ).filter(search=query)
+    return render(request,
+                  'blog/post/search.html',
+                  {'form': form,
+                   'query': query,
+                   'results': results})

@@ -30,3 +30,7 @@ class EditPostForm(forms.ModelForm):
         model= Post
         fields = ['title', 'body', 'status', 'tags']
 
+
+class SearchForm(forms.Form):
+    query = forms.CharField()
+
