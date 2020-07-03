@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils import timezone
 from django.utils.text import slugify
-from django.views.generic import ListView
+from django.views.generic import ListView, UpdateView, DeleteView
 from django.contrib.auth.models import User
 from .models import Post, Comment
 from .forms import EmailPostForm, CommentForm, AddPostForm
@@ -11,6 +11,10 @@ from taggit.models import Tag
 from django.db.models import Count
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from taggit.managers import TaggableManager
+from django.contrib import messages
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -66,6 +70,7 @@ def post_detail(request, year, month, day, post, ):
             new_comment.name = request.user
             # Save the comment to the database
             new_comment.save()
+            messages.success(request, 'Comment submission successful')
     else:
         comment_form = CommentForm()
 
@@ -129,11 +134,29 @@ def add_post(request):
 
         if form.is_valid():
             post = form.save(commit=False)
+            post.slug = slugify(post.title)
             post.author = request.user
             post.publish = timezone.now()
             post.slug = slugify(post.title)
             post.save()
+            form.save_m2m()
+            messages.success(request, 'Post submission successful')
             return redirect('blog:post_list')
     else:
         form = AddPostForm()
     return render(request, 'blog/post/add_post.html', {'form': form})
+
+
+class UpdatePostView(SuccessMessageMixin, UpdateView):
+    model = Post
+    template_name = 'blog/post/update_post.html'
+    fields = ['title', 'body', 'tags']
+    success_message = 'Post has been updated!'
+
+
+class DeletePostView(SuccessMessageMixin, DeleteView):
+    model = Post
+    template_name = 'blog/post/delete_post.html'
+    success_url = reverse_lazy('blog:post_list')
+    success_message = 'Post has been delete!'
+

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from .views import UpdatePostView, DeletePostView
 from .feeds import LatestPostFeed
 
 app_name = 'blog'
@@ -15,5 +16,7 @@ urlpatterns = [
     path('<int:post_id>/share/',
          views.post_share, name='post_share'),
     path('add_post/', views.add_post, name='add_post'),
+    path('update_post/<int:pk>', UpdatePostView.as_view(), name='update_post'),
+    path('delete_post/<int:pk>', DeletePostView.as_view(), name='delete_post'),
     path('feed/', LatestPostFeed(), name='post_feed'),
 ]

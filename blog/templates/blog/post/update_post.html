@@ -1,8 +1,8 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
-{% block tile %}Add Blog Post{% endblock %}
+{% block tile %}Edit Blog Post{% endblock %}
 {% block content %}
-    <h2>New post</h2>
+    <h2>Edit post</h2>
     <form method="POST" class="post-form">
         {% csrf_token %}
         {{ form|crispy }}

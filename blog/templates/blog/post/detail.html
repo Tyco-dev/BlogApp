@@ -9,6 +9,9 @@
             <div class="article-metadata">
               Author: <a class="mr-2" href="">{{ post.author }}</a>
               <small class="text-muted">Published {{ post.publish }}</small>
+              <a href="{% url "blog:update_post" post.pk %}" style="padding-left: 10px">Edit</a>
+              <a href="{% url "blog:delete_post" post.pk %}" style="padding-left: 5px">Delete</a></br>
+
             </div>
             <h2><a class="article-title" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
             <p class="article-content">{{ post.body|markdown }}</p>
