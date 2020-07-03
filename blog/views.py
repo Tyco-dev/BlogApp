@@ -45,13 +45,20 @@ def post_list(request, tag_slug=None):
                    'tag': tag})
 
 
+class DraftListView(ListView):
+    # Use a specific queryset instead of retrieving all objects.
+    queryset = Post.drafted.all()
+    # Use context variable 'posts' for the query results. Default is 'object_list'
+    context_object_name = 'posts'
+    paginate_by = 3
+    template_name = 'blog/post/list.html'
+
+
+
 @login_required(login_url='users:login')
-def post_detail(request, year, month, day, post, ):
+def post_detail(request, pk, post, ):
     post = get_object_or_404(Post, slug=post,
-                             status='published',
-                             publish__year=year,
-                             publish__month=month,
-                             publish__day=day)
+                             pk=pk)
 
     # List of active comments for this post
     comments = post.comments.filter(active=True)
@@ -150,7 +157,7 @@ def add_post(request):
 class UpdatePostView(SuccessMessageMixin, UpdateView):
     model = Post
     template_name = 'blog/post/update_post.html'
-    fields = ['title', 'body', 'tags']
+    fields = ['title', 'body', 'status', 'tags']
     success_message = 'Post has been updated!'
 
 
@@ -159,4 +166,3 @@ class DeletePostView(SuccessMessageMixin, DeleteView):
     template_name = 'blog/post/delete_post.html'
     success_url = reverse_lazy('blog:post_list')
     success_message = 'Post has been delete!'
-

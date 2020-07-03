@@ -9,6 +9,7 @@
               <a class="nav-item nav-link" href="{% url 'blog:post_list' %}">Home</a>
               {% if request.user.is_staff %}
               <a class="nav-item nav-link" href="{% url 'blog:add_post' %}">Add Post</a>
+              <a class="nav-item nav-link" href="{% url 'blog:draft_list'  %}">Draft Posts</a>
               {% endif %}
             </div>
             <!-- Navbar Right Side -->

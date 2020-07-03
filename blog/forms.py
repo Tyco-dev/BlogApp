@@ -23,3 +23,10 @@ class AddPostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'body', 'status', 'tags']
+
+
+class EditPostForm(forms.ModelForm):
+    class Meta:
+        model= Post
+        fields = ['title', 'body', 'status', 'tags']
+

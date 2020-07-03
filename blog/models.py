@@ -14,6 +14,12 @@ class PublishedManager(models.Manager):
                      self).get_queryset().filter(status='published')
 
 
+class DraftManager(models.Manager):
+    def get_queryset(self):
+        return super(DraftManager,
+                     self).get_queryset().filter(status='draft')
+
+
 class Post(models.Model):
     STATUS_CHOICES = (
         ('draft', 'Draft'),
@@ -35,6 +41,7 @@ class Post(models.Model):
                               default='draft')
     objects = models.Manager()  # The default manager.
     published = PublishedManager()  # Our custom manager.
+    drafted = DraftManager()
     tags = TaggableManager()
 
     class Meta:
@@ -45,9 +52,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:post_detail',
-                       args=[self.publish.year,
-                             self.publish.month,
-                             self.publish.day, self.slug])
+                       args=[self.pk, self.slug])
 
 
 class Comment(models.Model):
